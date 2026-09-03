@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #020617;
+    --bg-surface: rgba(15, 23, 42, 0.7);
+    --border-glass: rgba(255, 255, 255, 0.1);
+    --accent-indigo: #6366f1;
+    --accent-pink: #ec4899;
+    --accent-cyan: #06b6d4;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: #f8fafc;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+/* Custom Glassmorphism Utility Classes */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.glass-panel-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-hover:hover {
+  background: rgba(30, 41, 59, 0.75);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+  transform: translateY(-3px);
+}
+
+.glass-nav {
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #38bdf8 0%, #6366f1 50%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Glowing Border Effect */
+.glow-border {
+  position: relative;
+}
+
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(90deg, #6366f1, #ec4899, #06b6d4, #6366f1);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background-size: 300% 300%;
+  animation: glowMove 4s ease infinite;
+}
+
+.glow-border:hover::before {
+  opacity: 0.8;
+}
+
+@keyframes glowMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
