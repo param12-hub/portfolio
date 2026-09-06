@@ -20,11 +20,17 @@ const app = express();
 // Middlewares
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({
-  origin: [env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:3000'],
+  origin: true,
   credentials: true,
 }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Ensure DB is connected on every API request
+app.use(async (_req, _res, next) => {
+  await connectDB();
+  next();
+});
 
 // Global Rate Limiting
 app.use('/api', apiLimiter);
@@ -39,6 +45,14 @@ app.get('/health', (_req, res) => {
   });
 });
 
+app.get('/api/health', (_req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    connected: true,
+  });
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/content', contentRoutes);
@@ -49,31 +63,16 @@ app.use('/api/media', mediaRoutes);
 // Centralized Error Handler
 app.use(errorHandler);
 
-const startServer = async () => {
-  await connectDB();
-  
-  // Seed database automatically if in development and database connects
-  if (env.NODE_ENV === 'development') {
-    try {
-      await seedDatabase();
-    } catch (err) {
-      console.log('[Auto-seed skipped or failed]:', err);
-    }
-  }
-
+// Listen on port only if not in serverless environment
+if (process.env.VERCEL !== '1' && require.main === module) {
   const PORT = Number(env.PORT) || 5000;
   app.listen(PORT, () => {
     console.log(`
 🚀 ========================================================
    MERN Portfolio + Admin CMS API Running on Port: ${PORT}
-   Mode: ${env.NODE_ENV}
-   Client: ${env.CLIENT_URL}
-   Health check: http://localhost:${PORT}/health
 ======================================================== 🚀
     `);
   });
-};
-
-startServer();
+}
 
 export default app;
