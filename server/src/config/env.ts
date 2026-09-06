@@ -1,13 +1,18 @@
 import dotenv from 'dotenv';
-dotenv.config();
+import path from 'path';
+
+// Load .env explicitly from server root directory
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+
+const ATLAS_URI = 'mongodb+srv://paramesh_admin:MUiErUeXFQQjBAvQ@portfolio.glod0vz.mongodb.net/portfolio?retryWrites=true&w=majority&appName=portfolio';
 
 export const env = {
   PORT: process.env.PORT || '5000',
   NODE_ENV: process.env.NODE_ENV || 'development',
-  MONGO_URI: process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio_cms',
-  JWT_SECRET: process.env.JWT_SECRET || 'super_secret_jwt_key_apple_linear_stripe_quality_2026',
+  MONGO_URI: process.env.MONGO_URI || ATLAS_URI,
+  JWT_SECRET: process.env.JWT_SECRET || 'ParameshRajuri_SuperSecret_JWT_Key_998877665544332211',
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
-  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET || 'super_secret_refresh_jwt_key_2026',
+  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET || 'ParameshRajuri_RefreshSecret_TokenKey_112233445566778899',
   JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN || '30d',
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
   CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME || '',
@@ -17,5 +22,5 @@ export const env = {
   SMTP_PORT: Number(process.env.SMTP_PORT) || 587,
   SMTP_USER: process.env.SMTP_USER || '',
   SMTP_PASS: process.env.SMTP_PASS || '',
-  FROM_EMAIL: process.env.FROM_EMAIL || 'noreply@portfolio.dev',
+  FROM_EMAIL: process.env.FROM_EMAIL || 'parameshrajuri@gmail.com',
 };
